@@ -60,7 +60,7 @@ fn neighbors(
     .map(move |(dx, dy)| ((x + dx) as usize, (y + dy) as usize))
 }
 
-fn step(g: &mut Grid) -> u32 {
+fn step(g: &mut Grid) -> bool {
     let mut queue = VecDeque::new();
     let mut flashes = 0;
     for x in 0..g.len() {
@@ -91,18 +91,7 @@ fn step(g: &mut Grid) -> u32 {
         o.flashed = false;
     }
 
-    flashes
-}
-
-fn display(g: &Grid) -> String {
-    let mut out = String::new();
-    for row in g {
-        for entry in row {
-            out += &entry.energy.to_string();
-        }
-        out += "\n";
-    }
-    out
+    flashes == g.len() * g[0].len()
 }
 
 fn solve_for(input: &'static str) -> u32 {
@@ -116,12 +105,13 @@ fn solve_for(input: &'static str) -> u32 {
         })
         .collect();
 
-    let mut flashes = 0;
-    for _ in 0..100 {
-        flashes += step(&mut grid);
+    for i in 1.. {
+        if step(&mut grid) {
+            return i;
+        }
     }
-    flashes
+    unreachable!();
 }
 
-super::example!(1656, "11");
+super::example!(195, "11");
 super::problem!(u32, "11");
