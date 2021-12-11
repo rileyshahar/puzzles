@@ -14,11 +14,11 @@ jobs:
       - name: checkout source
         uses: actions/checkout@v2
 
-      - name: install stable toolchain
+      - name: install nightly toolchain
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
-          toolchain: stable
+          toolchain: nightly
           override: true
           components: rustfmt, clippy
 
@@ -41,11 +41,11 @@ jobs:
       - name: checkout source
         uses: actions/checkout@v2
 
-      - name: install stable toolchain
+      - name: install nightly toolchain
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
-          toolchain: stable
+          toolchain: nightly
           override: true
 
       - name: run cargo doc
