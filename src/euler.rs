@@ -15,6 +15,7 @@ pub mod p014;
 pub mod p015;
 pub mod p016;
 pub mod p017;
+pub mod p018;
 
 /// Declare the expected output of the problem.
 ///
