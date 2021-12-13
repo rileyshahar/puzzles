@@ -11,6 +11,7 @@ pub mod p09;
 pub mod p10;
 pub mod p11;
 pub mod p12;
+pub mod p13;
 
 /// Read the example input from `resources/example.txt`.
 #[allow(unused_macros)]
