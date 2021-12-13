@@ -55,21 +55,35 @@ impl Caves {
         );
     }
 
+    fn visited_small_twice(&self, visits: &[usize]) -> bool {
+        self.caves
+            .iter()
+            .enumerate()
+            .filter(|(_, c)| c.size == CaveSize::Small)
+            .map(|(i, _)| visits[i])
+            .any(|visits| visits > 1)
+    }
+
     fn dfs_step(
         &self,
         start: usize,
-        visited: &mut Vec<u32>,
+        visits: &mut Vec<usize>,
         visit: &mut impl FnMut(&Cave) -> bool,
     ) {
-        visited[start] += 1;
+        visits[start] += 1;
         if visit(&self.caves[start]) {
             for &cave in &self.caves[start].adjacency {
-                if visited[cave] < 1 || self.caves[cave].size == CaveSize::Large {
-                    self.dfs_step(cave, visited, visit);
+                if visits[cave] < 1
+                    || self.caves[cave].size == CaveSize::Large
+                    || !self.visited_small_twice(visits)
+                        && self.caves[cave].name != "start"
+                        && self.caves[cave].name != "end"
+                {
+                    self.dfs_step(cave, visits, visit);
                 }
             }
         }
-        visited[start] -= 1;
+        visits[start] -= 1;
     }
 }
 
@@ -101,5 +115,5 @@ fn solve_for(input: &'static str) -> usize {
     counter
 }
 
-super::example!(226, "12");
+super::example!(3509, "12");
 super::problem!(usize, "12");
