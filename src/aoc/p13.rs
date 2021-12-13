@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::{collections::HashSet, fmt::Display};
 
 /// Solve the problem.
 #[derive(Clone, Copy)]
@@ -16,23 +16,45 @@ impl Sheet {
         let dots = std::mem::take(&mut self.dots);
         self.dots = dots
             .into_iter()
-            .map(|dot| match fold {
-                Fold::X(amt) => {
-                    if dot.0 > amt {
-                        (amt - (dot.0 - amt), dot.1)
+            .map(|(x, y)| match fold {
+                Fold::X(line) => {
+                    if x > line {
+                        (2 * line - x, y)
                     } else {
-                        dot
+                        (x, y)
                     }
                 }
-                Fold::Y(amt) => {
-                    if dot.1 > amt {
-                        (dot.0, amt - (dot.1 - amt))
+                Fold::Y(line) => {
+                    if y > line {
+                        (x, 2 * line - y)
                     } else {
-                        dot
+                        (x, y)
                     }
                 }
             })
             .collect();
+    }
+}
+
+impl Display for Sheet {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let width = self.dots.iter().map(|(x, _)| x).max().unwrap_or(&0) + 1;
+        let height = self.dots.iter().map(|(_, y)| y).max().unwrap_or(&0) + 1;
+
+        let mut out = String::with_capacity(height * (width + 1));
+
+        for y in 0..height {
+            for x in 0..width {
+                if self.dots.contains(&(x, y)) {
+                    out.push('#');
+                } else {
+                    out.push('.');
+                }
+            }
+            out.push('\n');
+        }
+
+        write!(f, "{}", out)
     }
 }
 
@@ -46,30 +68,40 @@ fn to_dot(s: &str) -> (usize, usize) {
 
 fn to_fold(s: &str) -> Fold {
     let mut s = s.split(' ').nth(2).expect("folds are well-formed").chars();
-    let fold = match s.next().unwrap() {
+    let fold = match s.next().expect("folds have a direction") {
         'x' => Fold::X,
         'y' => Fold::Y,
-        _ => unreachable!(),
+        unknown => panic!("invalid fold direction: {}", unknown),
     };
-    let n = s.skip(1).collect::<String>().parse().unwrap();
+    let n = s
+        .skip(1)
+        .collect::<String>()
+        .parse()
+        .expect("folds have a coordinate");
     fold(n)
 }
 
-fn solve_for(input: &'static str) -> usize {
+fn solve_for(input: &'static str) -> String {
     let (dots, folds) = input.split_once("\n\n").expect("input is well-formed");
 
     let mut sheet = Sheet {
-        dots: dots
-            .trim_end() // remove trailing `\n`
-            .split('\n')
-            .map(to_dot)
-            .collect(),
+        dots: dots.split('\n').map(to_dot).collect(),
     };
 
-    sheet.fold(folds.split('\n').map(to_fold).next().unwrap());
+    for fold in folds.trim_end().split('\n').map(to_fold) {
+        sheet.fold(fold);
+    }
 
-    sheet.dots.len()
+    sheet.to_string()
 }
 
-super::example!(17, "13");
-super::problem!(usize, "13");
+super::example!(
+    "#####
+#...#
+#...#
+#...#
+#####
+",
+    "13"
+);
+super::problem!(String, "13");
