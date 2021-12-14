@@ -2,34 +2,40 @@ use std::collections::HashMap;
 
 use itertools::Itertools;
 
-struct Polymer(String);
+struct Polymer {
+    map: HashMap<(char, char), usize>,
+
+    // the map will double-count everything else, so we keep track of these
+    start: char,
+    end: char,
+}
 
 impl Polymer {
     fn apply(self, rules: &HashMap<(char, char), char>) -> Self {
-        let mut out = String::new();
-        for (a, b) in self.0.chars().tuple_windows() {
-            out.push(a);
+        let mut map = HashMap::new();
+        for (&(a, b), &n) in &self.map {
             if let Some(&c) = rules.get(&(a, b)) {
-                out.push(c);
+                let count = map.entry((a, c)).or_insert(0);
+                *count += n;
+
+                let count = map.entry((c, b)).or_insert(0);
+                *count += n;
+            } else {
+                let count = map.entry((a, b)).or_insert(0);
+                *count += n;
             }
         }
-        // probably an easier way to do this, but we don't get the last character from the loop
-        out.push(self.0.chars().rev().next().unwrap());
-        Self(out)
+        Self { map, ..self }
     }
 }
 
-struct InsertionRule((char, char), char);
-
-impl InsertionRule {
-    fn from_string(s: &'static str) -> Self {
-        let (from, to) = s.split_once(" -> ").expect("a polymer rule has a ->");
-        let mut from = from.chars();
-        Self(
-            (from.next().unwrap(), from.next().unwrap()),
-            to.chars().next().unwrap(),
-        )
-    }
+fn parse_insertion_rule(s: &'static str) -> ((char, char), char) {
+    let (from, to) = s.split_once(" -> ").expect("a polymer rule has a ->");
+    let mut from = from.chars();
+    (
+        (from.next().unwrap(), from.next().unwrap()),
+        to.chars().next().unwrap(),
+    )
 }
 
 /// Solve the problem.
@@ -39,22 +45,39 @@ fn solve_for(input: &'static str) -> usize {
         .split_once("\n\n")
         .expect("input is well-formed");
 
-    let mut polymer = Polymer(template.into());
-    let rules: HashMap<_, _> = rules
-        .split('\n')
-        .map(InsertionRule::from_string)
-        .map(|i| (i.0, i.1))
-        .collect();
+    let start = template.chars().next().unwrap();
+    let end = template.chars().last().unwrap();
+    let mut polymer = Polymer {
+        start,
+        end,
+        map: template.chars().tuple_windows().counts(),
+    };
+
+    let rules = rules.split('\n').map(parse_insertion_rule).collect();
 
     for _ in 0..40 {
         polymer = polymer.apply(&rules);
     }
 
-    let counts = polymer.0.chars().counts();
+    let counts = polymer.map.into_iter().fold(
+        HashMap::from([(polymer.end, 1), (polymer.start, 1)]),
+        |mut counts, ((s, e), n)| {
+            let count = counts.entry(s).or_insert(0);
+            *count += n;
+
+            let count = counts.entry(e).or_insert(0);
+            *count += n;
+
+            counts
+        },
+    );
+
     let mut sorted = counts.iter().sorted_by_key(|(_, n)| *n);
     let least = sorted.next().unwrap();
-    sorted.last().unwrap().1 - least.1
+
+    // we double counted everything
+    (sorted.last().unwrap().1 - least.1) / 2
 }
 
-super::example!(1588, "14");
+super::example!(2_188_189_693_529, "14");
 super::problem!(usize, "14");
