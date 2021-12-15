@@ -14,6 +14,39 @@ fn parse(input: &'static str) -> Grid {
         .collect()
 }
 
+/* fn expand(g: &Grid, factor: usize) -> Grid {
+    (0..(factor * g.len()))
+        .map(|x| {
+            (0..(factor * g[0].len()))
+                .map(|y| {
+                    (g[x % g.len()][y % g[0].len()]
+                        + u32::try_from(x / g.len() + y / g[0].len())
+                            .expect("grid is not 2^32 long"))
+                        % 10
+                })
+                .collect()
+        })
+        .collect()
+} */
+
+fn expand(g: &Grid, factor: usize) -> Grid {
+    (0..(factor * g.len()))
+        .map(|x| {
+            (0..(factor * g[0].len()))
+                .map(|y| {
+                    let cost = g[x % g.len()][y % g[0].len()]
+                        // apply the increment
+                        + u32::try_from(x / g.len() + y / g[0].len())
+                            .expect("grid is not 2^32 long");
+
+                    // apply wrapping: 10 -> 1, hence the extra cost / 10
+                    cost % 10 + cost / 10
+                })
+                .collect::<Vec<_>>()
+        })
+        .collect::<Vec<_>>()
+}
+
 #[derive(Default, PartialEq, Eq)]
 struct DijkstraState {
     position: (usize, usize),
@@ -87,8 +120,8 @@ fn dijkstra(grid: &Grid) -> u32 {
 }
 
 fn solve_for(input: &'static str) -> u32 {
-    dijkstra(&parse(input))
+    dijkstra(&expand(&parse(input), 5))
 }
 
-super::example!(40, "15");
+super::example!(315, "15");
 super::problem!(u32, "15");
