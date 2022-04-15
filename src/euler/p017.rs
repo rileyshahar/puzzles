@@ -41,7 +41,7 @@ fn solve_for(bound: u32) -> u32 {
 }
 
 super::example!(5 => 19);
-super::problem!(u32: 1000);
+super::problem!(u32: 1000 => 21124);
 
 #[cfg(test)]
 mod tests {

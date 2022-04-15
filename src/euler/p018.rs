@@ -49,4 +49,4 @@ super::example!("
 7 4
 2 4 6
 8 5 9 3" => 23);
-super::problem!(u32: TRIANGLE);
+super::problem!(u32: TRIANGLE => 1074);
