@@ -184,6 +184,7 @@ mod tests {
         assert!(!is_leap(1954));
     }
 
+    #[allow(clippy::redundant_pub_crate)] // definite false positive, rust-lang/rust-clippy #8756
     macro_rules! date_next_test {
         ($name:ident: $din:literal $min:expr, $yin:expr => $dout:literal $mout:expr, $yout:expr ) => {
             #[test]
