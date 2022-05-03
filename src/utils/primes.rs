@@ -182,6 +182,42 @@ pub fn number_of_divisors<N: Num + PartialOrd + Copy>(of: N) -> N {
         .fold(_1(), |p, n| p * n)
 }
 
+/// Determine is the sum unique of proper divisors of n.
+///
+/// # Examples
+/// ```
+/// # use pj_euler::utils::primes::unique_proper_divisor_sum;
+/// assert_eq!(unique_proper_divisor_sum(220u32), 284);
+/// ```
+/// ```
+/// # use pj_euler::utils::primes::unique_proper_divisor_sum;
+/// assert_eq!(unique_proper_divisor_sum(28u32), 28);
+/// ```
+/// ```
+/// # use pj_euler::utils::primes::unique_proper_divisor_sum;
+/// assert_eq!(unique_proper_divisor_sum(12u32), 16);
+/// ```
+#[must_use]
+pub fn unique_proper_divisor_sum<N: Num + PartialOrd + Copy + num::traits::Pow<N, Output = N>>(
+    n: N,
+) -> N {
+    if n == _0() {
+        // our trick doesn't work for 0
+        return _0();
+    }
+
+    // each divisor is a product of prime factors with some exponents less than the exponent of the
+    // factor in the prime decomposition of n. we exploit this plus distributivity to write the sum
+    // of divisors as a product of geometric series.
+    PrimeFactorization::of(n)
+        // this uses the formula for a geometric series
+        .map(|PrimeFactor { factor, exponent }| {
+            ((factor).pow(exponent + _1()) - _1()) / (factor - _1())
+        })
+        .fold(_1(), |t: N, i| t * i)
+        - n // we only want proper divisors
+}
+
 #[cfg(test)]
 mod benches {
     use super::{is_prime, PrimeFactorization, Primes};

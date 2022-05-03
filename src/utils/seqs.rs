@@ -5,6 +5,7 @@ use std::collections::HashMap;
 use num::{Num, NumCast};
 
 use super::num_fn::{_0, _1, _2, _3};
+use super::primes::unique_proper_divisor_sum;
 
 /// An iterator over the Triangle numbers, defined by
 ///
@@ -178,6 +179,53 @@ pub fn collatz_length<
         };
         lengths.insert(n, l);
         l
+    }
+}
+
+fn is_abundant<N: Num + PartialOrd + Copy + num::traits::Pow<N, Output = N>>(n: N) -> bool {
+    unique_proper_divisor_sum(n) > n
+}
+
+/// An iterator over the Abundant numbers.
+///
+/// A number n is abundant iff it is smaller than the sum of its proper divisors.
+///
+/// # Examples
+/// ```
+/// # use pj_euler::utils::seqs::Abundant;
+/// let mut a = Abundant::<u32>::new();
+/// assert_eq!(a.next(), Some(12));
+/// assert_eq!(a.next(), Some(18));
+/// assert_eq!(a.next(), Some(20));
+/// ```
+pub struct Abundant<N> {
+    // The previously yielded abundant number.
+    last: N,
+}
+
+impl<N: Num> Default for Abundant<N> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl<N: Num> Abundant<N> {
+    #[must_use]
+    pub fn new() -> Self {
+        Self { last: _0() }
+    }
+}
+
+impl<N: Num + PartialOrd + Copy + num::traits::Pow<N, Output = N>> Iterator for Abundant<N> {
+    type Item = N;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        loop {
+            self.last = self.last + _1();
+            if is_abundant(self.last) {
+                return Some(self.last);
+            }
+        }
     }
 }
 

@@ -1,7 +1,7 @@
 //! Evaluate the sum of all the amicable numbers under 10000.
 use std::collections::HashMap;
 
-use crate::utils::primes::{PrimeFactor, PrimeFactorization};
+use crate::utils::primes::unique_proper_divisor_sum;
 
 type Cache = HashMap<u32, u32>;
 
@@ -12,7 +12,9 @@ type Cache = HashMap<u32, u32>;
 /// and b are called amicable numbers.
 fn is_amicable(n: u32, cache: &mut Cache) -> bool {
     // TODO: make a well-behaved generic cache type
-    let potential_partner = *cache.entry(n).or_insert_with(|| proper_divisor_sum(n));
+    let potential_partner = *cache
+        .entry(n)
+        .or_insert_with(|| unique_proper_divisor_sum(n));
 
     if potential_partner == n {
         // n is perfect, not amicable
@@ -21,25 +23,8 @@ fn is_amicable(n: u32, cache: &mut Cache) -> bool {
 
     return cache
         .entry(potential_partner)
-        .or_insert_with(|| proper_divisor_sum(potential_partner))
+        .or_insert_with(|| unique_proper_divisor_sum(potential_partner))
         == &n;
-}
-
-/// What is the sum of proper divisors of n?
-fn proper_divisor_sum(n: u32) -> u32 {
-    if n == 0 {
-        // our trick doesn't work for 0
-        return 0;
-    }
-
-    // each divisor is a product of prime factors with some exponents less than the exponent of the
-    // factor in the prime decomposition of n. we exploit this plus distributivity to write the sum
-    // of divisors as a product of geometric series.
-    PrimeFactorization::of(n)
-        // this uses the formula for a geometric series
-        .map(|PrimeFactor { factor, exponent }| ((factor).pow(exponent + 1) - 1) / (factor - 1))
-        .product::<u32>()
-        - n // we only want proper divisors
 }
 
 fn solve_for(max: u32) -> u32 {
@@ -49,7 +34,7 @@ fn solve_for(max: u32) -> u32 {
 }
 
 super::example!(300 => 504); // just 220 and 284
-super::problem!(u32: 10000);
+super::problem!(u32: 10000 => 31626);
 
 #[cfg(test)]
 mod tests {
@@ -63,10 +48,5 @@ mod tests {
         assert!(!is_amicable(28, &mut Cache::new())); // perfect number
         assert!(!is_amicable(127, &mut Cache::new())); // just a random number
         assert!(!is_amicable(1, &mut Cache::new()));
-    }
-
-    #[test]
-    fn proper_divisor_sum_test() {
-        assert!(proper_divisor_sum(220) == 284);
     }
 }

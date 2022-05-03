@@ -20,6 +20,7 @@ pub mod p019;
 pub mod p020;
 pub mod p021;
 pub mod p022;
+pub mod p023;
 
 /// Declare the expected output of the problem.
 ///
