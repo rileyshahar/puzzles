@@ -116,5 +116,5 @@ fn solve_for(input: &'static str) -> u32 {
         .sum::<u32>()
 }
 
-super::example!(61229, "08");
-super::problem!(u32, "08");
+super::example!(61229, "21-08");
+super::problem!(u32, "21-08");

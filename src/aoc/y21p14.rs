@@ -79,5 +79,5 @@ fn solve_for(input: &'static str) -> usize {
     (sorted.last().unwrap().1 - least.1) / 2
 }
 
-super::example!(2_188_189_693_529, "14");
-super::problem!(usize, "14");
+super::example!(2_188_189_693_529, "21-14");
+super::problem!(usize, "21-14");

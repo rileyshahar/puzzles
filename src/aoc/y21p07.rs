@@ -28,5 +28,5 @@ fn solve_for(input: &'static str) -> u32 {
         .expect("numbers in input")
 }
 
-super::example!(168, "07");
-super::problem!(u32, "07");
+super::example!(168, "21-07");
+super::problem!(u32, "21-07");

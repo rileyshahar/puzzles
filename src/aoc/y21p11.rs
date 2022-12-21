@@ -113,5 +113,5 @@ fn solve_for(input: &'static str) -> u32 {
     unreachable!();
 }
 
-super::example!(195, "11");
-super::problem!(u32, "11");
+super::example!(195, "21-11");
+super::problem!(u32, "21-11");

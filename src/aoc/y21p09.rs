@@ -68,5 +68,5 @@ fn solve_for(input: &'static str) -> usize {
         .product()
 }
 
-super::example!(1134, "09");
-super::problem!(usize, "09");
+super::example!(1134, "21-09");
+super::problem!(usize, "21-09");

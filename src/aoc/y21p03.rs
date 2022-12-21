@@ -53,5 +53,5 @@ fn solve_for(input: &'static str) -> u32 {
     oxygen[0] * co2[0]
 }
 
-super::example!(230, "03");
-super::problem!(u32, "03");
+super::example!(230, "21-03");
+super::problem!(u32, "21-03");

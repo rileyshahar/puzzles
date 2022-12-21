@@ -109,5 +109,5 @@ fn solve_for(input: &'static str) -> u32 {
     unreachable!("the problem guarantees some board eventually wins")
 }
 
-super::example!(1924, "04");
-super::problem!(u32, "04");
+super::example!(1924, "21-04");
+super::problem!(u32, "21-04");

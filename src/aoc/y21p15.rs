@@ -123,5 +123,5 @@ fn solve_for(input: &'static str) -> u32 {
     dijkstra(&expand(&parse(input), 5))
 }
 
-super::example!(315, "15");
-super::problem!(u32, "15");
+super::example!(315, "21-15");
+super::problem!(u32, "21-15");

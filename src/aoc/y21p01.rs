@@ -13,5 +13,5 @@ fn solve_for(input: &'static str) -> usize {
         .fold(0, |t, (p, c)| if c > p { t + 1 } else { t })
 }
 
-super::example!(5, "01");
-super::problem!(usize, "01");
+super::example!(5, "21-01");
+super::problem!(usize, "21-01");

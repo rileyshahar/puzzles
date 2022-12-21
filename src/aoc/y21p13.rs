@@ -102,6 +102,6 @@ super::example!(
 #...#
 #####
 ",
-    "13"
+    "21-13"
 );
-super::problem!(String, "13");
+super::problem!(String, "21-13");

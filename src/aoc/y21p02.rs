@@ -71,8 +71,8 @@ fn solve_for(input: &'static str) -> u32 {
         .product()
 }
 
-super::example!(900, "02");
-super::problem!(u32, "02");
+super::example!(900, "21-02");
+super::problem!(u32, "21-02");
 
 #[cfg(test)]
 mod tests {

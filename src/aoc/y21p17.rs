@@ -45,5 +45,5 @@ fn solve_for(input: &'static str) -> i32 {
     (target.ymin + 1) * target.ymin / 2
 }
 
-super::example!(45, "17");
-super::problem!(i32, "17");
+super::example!(45, "21-17");
+super::problem!(i32, "21-17");

@@ -66,5 +66,5 @@ fn solve_for(input: &'static str) -> u64 {
     scores.nth(scores.len() / 2).unwrap()
 }
 
-super::example!(288_957, "10");
-super::problem!(u64, "10");
+super::example!(288_957, "21-10");
+super::problem!(u64, "21-10");

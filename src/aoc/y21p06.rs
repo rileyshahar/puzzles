@@ -37,5 +37,5 @@ fn solve_for(input: &'static str) -> u64 {
     lanternfish.sum()
 }
 
-super::example!(26_984_457_539, "06");
-super::problem!(u64, "06");
+super::example!(26_984_457_539, "21-06");
+super::problem!(u64, "21-06");

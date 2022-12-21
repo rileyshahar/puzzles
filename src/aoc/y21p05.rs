@@ -90,8 +90,8 @@ fn solve_for(input: &'static str) -> usize {
         .count()
 }
 
-super::example!(12, "05");
-super::problem!(usize, "05");
+super::example!(12, "21-05");
+super::problem!(usize, "21-05");
 
 #[cfg(test)]
 mod tests {

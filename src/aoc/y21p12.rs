@@ -115,5 +115,5 @@ fn solve_for(input: &'static str) -> usize {
     counter
 }
 
-super::example!(3509, "12");
-super::problem!(usize, "12");
+super::example!(3509, "21-12");
+super::problem!(usize, "21-12");
