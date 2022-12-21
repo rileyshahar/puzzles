@@ -16,6 +16,8 @@ pub mod y21p14;
 pub mod y21p15;
 pub mod y21p17;
 
+pub mod y22p01;
+
 /// Read the example input from `resources/example.txt`.
 #[allow(unused_macros)]
 macro_rules! example_input {
