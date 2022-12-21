@@ -18,10 +18,7 @@ type IResult<'a> = Result<(Option<char>, Chars<'a>, u64), Error>;
 //
 // Not the cleanest parser ever but it works
 fn parse_chunk(mut c: Chars) -> IResult {
-    let open = match c.next() {
-        None => return Ok((None, c, 0)),
-        Some(o) => o,
-    };
+    let Some(open) = c.next() else { return Ok((None, c, 0)) };
     let expected = match open {
         '(' => ')',
         '[' => ']',

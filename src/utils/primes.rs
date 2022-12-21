@@ -103,7 +103,7 @@ impl<N: Num + Step + PartialOrd + Copy> Iterator for Primes<N> {
 }
 
 /// A single prime factor.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct PrimeFactor<T> {
     pub factor: T,
     pub exponent: T,

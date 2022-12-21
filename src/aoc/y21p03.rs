@@ -11,11 +11,7 @@ fn most_common_bit(inputs: &[u32], bit: usize) -> u8 {
             count -= 1;
         }
     }
-    if count >= 0 {
-        1
-    } else {
-        0
-    }
+    u8::from(count >= 0)
 }
 
 fn solve_for(input: &'static str) -> u32 {

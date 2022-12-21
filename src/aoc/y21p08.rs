@@ -21,7 +21,7 @@ impl Wire {
             'e' => Self::E,
             'f' => Self::F,
             'g' => Self::G,
-            _ => panic!("invalid char: {}", c),
+            _ => panic!("invalid char: {c}"),
         }
     }
 }

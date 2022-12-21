@@ -32,7 +32,7 @@ fn count_letters(n: u32) -> u32 {
         100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 => count_letters(n / 100) + 7, // 7 is for "hundred"
         101..=999 => count_letters(n / 100 * 100) + 3 + count_letters(n % 100), // 3 is for "and"
         1000 => 11,
-        _ => panic!("only supports numbers from 1 to 1000: got {}", n),
+        _ => panic!("only supports numbers from 1 to 1000: got {n}"),
     }
 }
 

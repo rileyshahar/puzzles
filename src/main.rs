@@ -8,10 +8,7 @@ fn main() {
     match args.next().unwrap_or_default().as_str() {
         "--euler" | "" => euler(args.next().unwrap_or_default().as_str()),
         "--aoc" => aoc(args.next().unwrap_or_default().as_str()),
-        unknown => panic!(
-            "please specify --aoc or --euler; {} is not a valid argument",
-            unknown
-        ),
+        unknown => panic!("please specify --aoc or --euler; {unknown} is not a valid argument"),
     }
 }
 

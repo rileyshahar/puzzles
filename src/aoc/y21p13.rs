@@ -54,7 +54,7 @@ impl Display for Sheet {
             out.push('\n');
         }
 
-        write!(f, "{}", out)
+        write!(f, "{out}")
     }
 }
 
@@ -71,7 +71,7 @@ fn to_fold(s: &str) -> Fold {
     let fold = match s.next().expect("folds have a direction") {
         'x' => Fold::X,
         'y' => Fold::Y,
-        unknown => panic!("invalid fold direction: {}", unknown),
+        unknown => panic!("invalid fold direction: {unknown}"),
     };
     let n = s
         .skip(1)
