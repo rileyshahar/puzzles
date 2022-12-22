@@ -7,7 +7,7 @@ fn solve_for(input: &'static str) -> usize {
         .split("\n\n")
         .map(|s| {
             s.split('\n')
-                .map(|n| str::parse::<usize>(n).expect("input is valid usizes"))
+                .map(|n| n.parse::<usize>().expect("input is valid usizes"))
                 .sum()
         })
     {
