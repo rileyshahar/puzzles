@@ -26,5 +26,5 @@ fn solve_for(input: &'static str) -> usize {
     best.iter().sum()
 }
 
-super::example!(24000, "22-01");
+super::example!(45000, "22-01");
 super::problem!(usize, "22-01");

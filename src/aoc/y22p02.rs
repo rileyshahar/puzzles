@@ -10,6 +10,15 @@ enum Play {
 use Play::{Paper, Rock, Sizzors};
 
 impl Play {
+    const fn strategy(self, outcome: Outcome) -> Self {
+        match (self, outcome) {
+            (Rock, Win) | (Paper, Draw) | (Sizzors, Loss) => Paper,
+            (Rock, Draw) | (Paper, Loss) | (Sizzors, Win) => Rock,
+            (Rock, Loss) | (Paper, Win) | (Sizzors, Draw) => Sizzors,
+        }
+    }
+
+    #[allow(dead_code)]
     const fn against(self, other: Self) -> Outcome {
         match (self, other) {
             (Rock, Sizzors) | (Paper, Rock) | (Sizzors, Paper) => Win,
@@ -32,9 +41,9 @@ impl TryFrom<char> for Play {
 
     fn try_from(c: char) -> Result<Self, Self::Error> {
         Ok(match c {
-            'A' | 'X' => Rock,
-            'B' | 'Y' => Paper,
-            'C' | 'Z' => Sizzors,
+            'A' => Rock,
+            'B' => Paper,
+            'C' => Sizzors,
             _ => return Err(()),
         })
     }
@@ -59,18 +68,31 @@ impl Outcome {
 
 use Outcome::{Draw, Loss, Win};
 
+impl TryFrom<char> for Outcome {
+    type Error = ();
+
+    fn try_from(c: char) -> Result<Self, Self::Error> {
+        Ok(match c {
+            'X' => Loss,
+            'Y' => Draw,
+            'Z' => Win,
+            _ => return Err(()),
+        })
+    }
+}
+
 struct Round {
-    us: Play,
     opp: Play,
+    desire: Outcome,
 }
 
 impl Round {
-    const fn outcome(self) -> Outcome {
-        self.us.against(self.opp)
+    const fn us(self) -> Play {
+        self.opp.strategy(self.desire)
     }
 
     const fn score(self) -> u32 {
-        self.us.score() + self.outcome().score()
+        self.desire.score() + self.us().score()
     }
 }
 
@@ -82,9 +104,9 @@ impl std::str::FromStr for Round {
 
         let opp = c.next().ok_or(())?.try_into()?;
         c.next();
-        let us = c.next().ok_or(())?.try_into()?;
+        let desire = c.next().ok_or(())?.try_into()?;
 
-        Ok(Self { us, opp })
+        Ok(Self { opp, desire })
     }
 }
 
@@ -98,5 +120,5 @@ fn solve_for(input: &'static str) -> u32 {
         .sum()
 }
 
-super::example!(15, "22-02");
+super::example!(12, "22-02");
 super::problem!(u32, "22-02");
